@@ -5,8 +5,14 @@ using Eigen::VectorXd;
 using Eigen::MatrixXd;
 using std::vector;
 
+/**
+ * Constructor.
+ */
 Tools::Tools() {}
 
+/**
+ * Destructor.
+ */
 Tools::~Tools() {}
 
 /**
@@ -26,23 +32,23 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 		return rmse;
 	}
 
-	/* accumulate squared residuals */
+	/* Accumulate squared residuals */
 	for (unsigned int i = 0; i < estimations.size(); ++i) {
 
 		VectorXd residual = estimations[i] - ground_truth[i];
 
-		/* coefficient-wise multiplication */
+		/* Coefficient-wise multiplication */
 		residual = residual.array() * residual.array();
 		rmse += residual;
 	}
 
-	/* calculate the mean */
+	/* Calculate the mean */
 	rmse = rmse / estimations.size();
 
-	/* calculate the squared root */
+	/* Calculate the squared root */
 	rmse = rmse.array().sqrt();
 
-	/* return the result */
+	/* Return the result */
 	return rmse;
 }
 

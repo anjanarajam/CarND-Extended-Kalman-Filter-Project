@@ -30,7 +30,6 @@ class KalmanFilter {
   /**
    * Prediction Predicts the state and the state covariance
    * using the process model
-   * @param delta_T Time between k and k+1 in s
    */
   void Predict();
 
@@ -53,22 +52,22 @@ class KalmanFilter {
    */
   void CalculateEstimatedValue(const Eigen::VectorXd& y);
 
-  /* state vector */
+  /* State vector */
   Eigen::VectorXd x_;
 
-  /* state covariance matrix */
+  /* State covariance matrix */
   Eigen::MatrixXd P_;
 
-  /*  state transition matrix */
+  /* State transition matrix */
   Eigen::MatrixXd F_;
 
-  /*  process covariance matrix */
+  /* Process covariance matrix */
   Eigen::MatrixXd Q_;
 
- /*  measurement matrix */
+ /* Measurement matrix */
   Eigen::MatrixXd H_;
 
- /*  measurement covariance matrix */
+ /* Measurement covariance matrix */
   Eigen::MatrixXd R_;
 };
 
