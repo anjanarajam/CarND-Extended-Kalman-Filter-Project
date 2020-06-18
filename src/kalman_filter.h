@@ -46,24 +46,29 @@ class KalmanFilter {
    */
   void UpdateEKF(const Eigen::VectorXd &z);
 
+  /**
+   * Calculates the estimated/updated values of position and velocity 
+   * after comparing the sensor measurement and the predicted value.
+   * @param y Difference between z and predicted x value
+   */
   void CalculateEstimatedValue(const Eigen::VectorXd& y);
 
-  // state vector
+  /* state vector */
   Eigen::VectorXd x_;
 
-  // state covariance matrix
+  /* state covariance matrix */
   Eigen::MatrixXd P_;
 
-  // state transition matrix
+  /*  state transition matrix */
   Eigen::MatrixXd F_;
 
-  // process covariance matrix
+  /*  process covariance matrix */
   Eigen::MatrixXd Q_;
 
-  // measurement matrix
+ /*  measurement matrix */
   Eigen::MatrixXd H_;
 
-  // measurement covariance matrix
+ /*  measurement covariance matrix */
   Eigen::MatrixXd R_;
 };
 

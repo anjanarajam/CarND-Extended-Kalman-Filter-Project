@@ -1,4 +1,5 @@
 #include "kalman_filter.h"
+#include <cmath>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -7,11 +8,19 @@ using Eigen::VectorXd;
  * Please note that the Eigen library does not initialize 
  *   VectorXd or MatrixXd objects with zeros upon creation.
  */
-
+ /**
+  * Constructor.
+  */
 KalmanFilter::KalmanFilter() {}
 
+/**
+ * Destructor.
+ */
 KalmanFilter::~KalmanFilter() {}
 
+/**
+  *Initializes Kalman filter
+  */
 void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
                         MatrixXd &H_in, MatrixXd &R_in, MatrixXd &Q_in) {
   x_ = x_in;
@@ -22,6 +31,10 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   Q_ = Q_in;
 }
 
+/**
+ * Predicts the state and the state covariance
+ * using the process model
+ */
 void KalmanFilter::Predict() {
   /**
    * TODO: predict the state
@@ -31,6 +44,9 @@ void KalmanFilter::Predict() {
     P_ = F_ * P_ * Ft + Q_;
 }
 
+/**
+ * Updates the state by using standard Kalman Filter equations
+ */
 void KalmanFilter::Update(const VectorXd &z) {
   /**
    * TODO: update the state by using Kalman Filter equations
@@ -43,9 +59,11 @@ void KalmanFilter::Update(const VectorXd &z) {
 
     /*Calculate the estimated value of state and covariance */
     CalculateEstimatedValue(y);
-
 }
 
+/**
+ * Updates the state by using Extended Kalman Filter equations
+ */
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   /**
    * TODO: update the state by using Extended Kalman Filter equations
@@ -70,10 +88,24 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     sensor to the predicted value */
     VectorXd y = z - z_pred;
 
+
+    /* Normlize angles in the y vector */
+    if (y[1] > M_PI) {
+        y[1] -= M_PI;
+    }
+    else if (y[1] > M_PI)
+    {
+        y[1] += M_PI;
+    }
+
     /*Calculate the estimated value of state and covariance */
     CalculateEstimatedValue(y);
 }
 
+/**
+ * Calculates the estimated/updated values of position and velocity
+ * after comparing the sensor measurement and the predicted value.
+ */
 void KalmanFilter::CalculateEstimatedValue(const VectorXd& y)
 {
     MatrixXd Ht = H_.transpose();
@@ -86,6 +118,7 @@ void KalmanFilter::CalculateEstimatedValue(const VectorXd& y)
     x_ = x_ + (K * y);
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
+
     /* Estimated covariance */
     P_ = (I - K * H_) * P_;
 }
