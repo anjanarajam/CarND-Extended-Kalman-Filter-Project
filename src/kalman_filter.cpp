@@ -88,14 +88,16 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     sensor to the predicted value */
     VectorXd y = z - z_pred;
 
-
     /* Normlize angles in the y vector */
-    if (y[1] > M_PI) {
-        y[1] -= (2 * M_PI);
-    }
-    else if (y[1] < M_PI)
-    {
-        y[1] += (2 * M_PI);
+    while ((y[1] > M_PI) || (y[1] < M_PI))
+    {         
+        if (y[1] > M_PI) {
+            y[1] -= (2 * M_PI);
+        }
+        else if (y[1] < M_PI)
+        {
+            y[1] += (2 * M_PI);
+        }
     }
 
     /*Calculate the estimated value of state and covariance */
