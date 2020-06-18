@@ -91,11 +91,11 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
     /* Normlize angles in the y vector */
     if (y[1] > M_PI) {
-        y[1] -= M_PI;
+        y[1] -= (2 * M_PI);
     }
     else if (y[1] < M_PI)
     {
-        y[1] += M_PI;
+        y[1] += (2 * M_PI);
     }
 
     /*Calculate the estimated value of state and covariance */
